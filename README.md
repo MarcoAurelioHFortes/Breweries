@@ -7,7 +7,7 @@ The goal of this project is to consume data from the Open Brewery DB API, transf
 - **Gold Layer:** Aggregated analytical layer
 
 ## Architecture
-This solution is orchestrated using **Apache Airflow** and containerized using **Docker** via **ASTRO CLI**. The pipeline consists of three Jupyter notebooks executed as Airflow DAGs:
+This solution is orchestrated using **Apache Airflow** and containerized using **Docker** via **ASTRO CLI**. The pipeline consists of three Jupyter notebooks executed as Airflow DAGs.
 
 ### **Pipeline Stages:**
 1. **Bronze Layer:**
@@ -24,7 +24,11 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
    - Aggregates the number of breweries by `city` and `brewery_type` using **SQL queries**
    - Saves the aggregated data in the Gold Layer
 
-### **Monitoring & Logging:**
+### **Storage Considerations**
+- In a real-world scenario, the data would be stored in a **cloud-based data lake** such as AWS S3, Google Cloud Storage, or Azure Data Lake.
+- This project uses **parameterized directory structures** to ensure files are saved in an organized and scalable way.
+
+### **Monitoring & Logging**
 - Each run of the notebooks is stored in `include/notebooks/runs` for traceability.
 - Airflow's web server provides pipeline monitoring.
 - Future improvements can integrate **Datadog** for logging and **email alerts** for failures.
@@ -38,14 +42,15 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 ### **Running the Project**
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/brewery-data-pipeline.git
-   cd brewery-data-pipeline
+   git clone https://github.com/MarcoAurelioHFortes/Breweries.git
+   cd Breweries
    ```
 2. Start the project using Astro CLI:
    ```sh
    astro dev start
    ```
 3. Wait for the containers to initialize (check in Docker Desktop if needed).
+![Docker Containers](./doc/images/docker.png)
 4. Once the `webserver` container is running, access the Airflow UI:
    - Open Docker Desktop and click on the **webserver** port.
    - Or manually go to: `http://localhost:8080`
@@ -54,15 +59,15 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
      - **Password:** `admin`
 
 ### **Triggering & Monitoring DAGs**
-- The **main DAG** (`brewery_dag`) is scheduled to run **daily at midnight (00:00)**
-- It **retries up to 4 times** in case of failure
-- You can manually trigger the DAG from the Airflow UI
+- The **main DAG** (`brewery_dag`) is scheduled to run **daily at midnight (00:00)**.
+- It **retries up to 4 times** in case of failure.
+- You can manually trigger the DAG from the Airflow UI.
 
 ## **Future Improvements**
-- Implement real-time alerting with **Datadog**
-- Store metadata in a centralized logging system
-- Deploy on **Kubernetes** for better scalability
+- Implement real-time alerting with **Datadog**.
+- Store metadata in a centralized logging system.
+- Deploy on **Kubernetes** for better scalability.
 
 ---
-**Author:** Your Name  
-**Repository:** [GitHub](https://github.com/yourusername/brewery-data-pipeline)
+**Author:** Marco Aurélio Hernandes Fortes  
+**Repository:** [GitHub](https://github.com/MarcoAurelioHFortes/Breweries.git)
