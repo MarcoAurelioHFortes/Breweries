@@ -9,5 +9,8 @@ airflow-webserver.pid
 webserver_config.py
 airflow.cfg
 airflow.db
-include/data/
-include/notebooks/runs/
+include/data/*
+!include/data/.gitkeep
+
+include/notebooks/runs/*
+!include/notebooks/runs/.gitkeep
