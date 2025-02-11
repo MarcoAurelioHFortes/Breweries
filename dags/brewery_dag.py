@@ -7,7 +7,7 @@ from airflow.providers.papermill.operators.papermill import PapermillOperator
 with DAG(
     dag_id='brewery_dag',
     default_args={
-        'retries': 0
+        'retries': 4
     },
     schedule='0 0 * * *',
     start_date=datetime(2025, 2, 10),
