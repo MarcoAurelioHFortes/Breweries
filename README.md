@@ -10,25 +10,25 @@ The goal of this project is to consume data from the Open Brewery DB API, transf
 This solution is orchestrated using **Apache Airflow** and containerized using **Docker** via **ASTRO CLI**. The pipeline consists of three Jupyter notebooks executed as Airflow DAGs.
 
 ### **Pipeline Stages:**
-1. **Bronze Layer:**
-   - Fetches data from the Open Brewery DB API (`https://api.openbrewerydb.org/breweries`)
-   - Saves raw JSON files to `include/data/bronze/breweries/YYYYMMdd/YYYYMMddThhmmss.json`
-   - **File Structure Example:**
-     ![Bronze File Structure](./doc/images/bronze_file_structure.png)
+#### **Bronze Layer:**
+- Fetches data from the Open Brewery DB API (`https://api.openbrewerydb.org/breweries`)
+- Saves raw JSON files to `include/data/bronze/breweries/YYYYMMdd/YYYYMMddThhmmss.json`
 
-2. **Silver Layer:**
-   - Reads JSON files from the Bronze Layer
-   - Converts them to **Parquet format**, partitioning by `city`
-   - Saves transformed files to `include/data/silver/breweries/YYYYMMdd/YYYYMMddThhmmss.parquet`
-   - **File Structure Example:**
-     ![Silver File Structure](./doc/images/silver_file_structure.png)
+![Bronze File Hierarchy](./doc/images/bronze_hierarchy.png)
 
-3. **Gold Layer:**
-   - Reads the partitioned Parquet files
-   - Aggregates the number of breweries by `city` and `brewery_type` using **SQL queries**
-   - Saves the aggregated data in the Gold Layer
-   - **File Structure Example:**
-     ![Gold File Structure](./doc/images/gold_file_structure.png)
+#### **Silver Layer:**
+- Reads JSON files from the Bronze Layer
+- Converts them to **Parquet format**, partitioning by `city`
+- Saves transformed files to `include/data/silver/breweries/YYYYMMdd/YYYYMMddThhmmss.parquet`
+
+![Silver File Hierarchy](./doc/images/silver_hierarchy.png)
+
+#### **Gold Layer:**
+- Reads the partitioned Parquet files
+- Aggregates the number of breweries by `city` and `brewery_type` using **SQL queries**
+- Saves the aggregated data in the Gold Layer
+
+![Gold File Hierarchy](./doc/images/gold_hierarchy.png)
 
 ### **Storage Considerations**
 - In a real-world scenario, the data would be stored in a **cloud-based data lake** such as AWS S3, Google Cloud Storage, or Azure Data Lake.
@@ -39,8 +39,7 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 - Airflow's web server provides pipeline monitoring.
 - Future improvements can integrate **Datadog** for logging and **email alerts** for failures.
 
-- **Notebook Runs Folder Example:**
-  ![Runs Folder Structure](./doc/images/runs_folder_structure.png)
+![Runs Folder Hierarchy](./doc/images/runs_hierarchy.png)
 
 ## **Installation & Setup**
 
@@ -59,7 +58,9 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
    astro dev start
    ```
 3. Wait for the containers to initialize (check in Docker Desktop if needed).
-   ![Docker Containers](./doc/images/docker.png)
+
+![Docker Containers](./doc/images/docker.png)
+
 4. Once the `webserver` container is running, access the Airflow UI:
    - Open Docker Desktop and click on the **webserver** port.
    - Or manually go to: `http://localhost:8080`
@@ -73,8 +74,7 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 - You can manually trigger the DAG from the Airflow UI.
 - To check the **Gold Layer**, manually trigger `read_breweries_dag`, then navigate to `/include/notebooks/runs` and look for the latest **read notebook** to inspect the DataFrame.
 
-- **Example Read Notebook Output:**
-  ![Notebook Output Example](./doc/images/notebook_output.png)
+![Example Read Notebook](./doc/images/notebook_dataframe.png)
 
 ## **Future Improvements**
 - Implement real-time alerting with **Datadog**.
