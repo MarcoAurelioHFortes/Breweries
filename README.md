@@ -59,9 +59,10 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
      - **Password:** `admin`
 
 ### **Triggering & Monitoring DAGs**
-- The **main DAG** (`brewery_dag`) is scheduled to run **daily at midnight (00:00)**.
+- The **main DAG** (`brewery_dag`) is scheduled to run **daily at midnight (00:00)`.
 - It **retries up to 4 times** in case of failure.
 - You can manually trigger the DAG from the Airflow UI.
+- To check the **Gold Layer**, manually trigger `read_breweries_dag`, then navigate to `/include/notebooks/runs` and look for the latest **read notebook** to inspect the DataFrame.
 
 ## **Future Improvements**
 - Implement real-time alerting with **Datadog**.
