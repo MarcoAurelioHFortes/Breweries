@@ -14,21 +14,21 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 - Fetches data from the Open Brewery DB API (`https://api.openbrewerydb.org/breweries`)
 - Saves raw JSON files to `include/data/bronze/breweries/YYYYMMdd/YYYYMMddThhmmss.json`
 
-![Bronze File Hierarchy](./doc/images/bronze_hierarchy.png)
+![Bronze File Hierarchy](./doc/images/bronze_file_structure.png)
 
 #### **Silver Layer:**
 - Reads JSON files from the Bronze Layer
 - Converts them to **Parquet format**, partitioning by `city`
 - Saves transformed files to `include/data/silver/breweries/YYYYMMdd/YYYYMMddThhmmss.parquet`
 
-![Silver File Hierarchy](./doc/images/silver_hierarchy.png)
+![Silver File Hierarchy](./doc/images/silver_file_structure.png)
 
 #### **Gold Layer:**
 - Reads the partitioned Parquet files
 - Aggregates the number of breweries by `city` and `brewery_type` using **SQL queries**
 - Saves the aggregated data in the Gold Layer
 
-![Gold File Hierarchy](./doc/images/gold_hierarchy.png)
+![Gold File Hierarchy](./doc/images/gold_file_structure.png)
 
 ### **Storage Considerations**
 - In a real-world scenario, the data would be stored in a **cloud-based data lake** such as AWS S3, Google Cloud Storage, or Azure Data Lake.
@@ -39,7 +39,7 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 - Airflow's web server provides pipeline monitoring.
 - Future improvements can integrate **Datadog** for logging and **email alerts** for failures.
 
-![Runs Folder Hierarchy](./doc/images/runs_hierarchy.png)
+![Runs Folder Hierarchy](./doc/images/runs_folder_structure.png)
 
 ## **Installation & Setup**
 
@@ -74,7 +74,7 @@ This solution is orchestrated using **Apache Airflow** and containerized using *
 - You can manually trigger the DAG from the Airflow UI.
 - To check the **Gold Layer**, manually trigger `read_breweries_dag`, then navigate to `/include/notebooks/runs` and look for the latest **read notebook** to inspect the DataFrame.
 
-![Example Read Notebook](./doc/images/notebook_dataframe.png)
+![Example Read Notebook](./doc/images/notebook_output.png)
 
 ## **Future Improvements**
 - Implement real-time alerting with **Datadog**.
